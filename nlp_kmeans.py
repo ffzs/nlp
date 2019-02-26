@@ -8,7 +8,7 @@ import newspaper
 import requests  # 导入爬虫库
 from bs4 import BeautifulSoup
 import datetime as dt
-today = dt.datetime.today().strftime("%Y-%m-%d")  # 过去今天时间
+today = dt.datetime.today().strftime("%Y-%m-%d")  # 获取今天时间
 
 # 中文分词
 def jieba_cut(comment):
@@ -29,7 +29,7 @@ def get_news():
     for a in all_a:
         try:
             url = a['href']
-            if ('finance.sina.com.cn' in url)&(today in url):
+            if ('finance.sina.com.cn' in url)&(today in url):   # 获取今天的新闻链接
                 article = newspaper.Article(url, language='zh')
                 # 下载文章
                 article.download()
@@ -57,8 +57,7 @@ model_kmeans.fit(X)  # 训练模型
 cluster_labels = model_kmeans.labels_  # 聚类标签结果
 word_vectors = vectorizer.get_feature_names()  # 词向量
 word_values = X.toarray()  # 向量值
-comment_matrix = np.hstack((word_values,  cluster_labels.reshape(word_values.
-    shape[0], 1)))  # 将向量值和标签值合并为新的矩阵
+comment_matrix = np.hstack((word_values,  cluster_labels.reshape(word_values.shape[0], 1)))  # 将向量值和标签值合并为新的矩阵
 word_vectors.append('cluster_labels')  # 将新的聚类标签列表追加到词向量后面
 comment_pd = pd.DataFrame(comment_matrix, columns=word_vectors)  # 创建包含词向量和聚类标签的数据框
 comment_pd.to_csv('comment.csv')
